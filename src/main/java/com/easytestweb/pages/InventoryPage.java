@@ -39,7 +39,8 @@ public class InventoryPage extends BasePage {
     }
 
     public void addItemToCart(String productName) {
-        String buttonSelector = String.format("//div[text()='%s']/ancestor::div[@class='inventory_item']//button", productName);
+        String buttonSelector = String.format("//div[text()='%s']/ancestor::div[@class='inventory_item']//button",
+                productName);
         click(buttonSelector);
     }
 
