@@ -1,58 +1,49 @@
 package com.easytestweb.pages;
 
-import com.easytestweb.config.ConfigManager;
 import com.microsoft.playwright.Page;
 
-/**
- * Page Object representing the Login Page (e.g., SauceDemo login).
- */
-public class LoginPage extends BasePage {
+public class LoginPage {
+    private final Page page;
 
-    private static final String USERNAME_INPUT = "#user-name";
-    private static final String PASSWORD_INPUT = "#password";
-    private static final String LOGIN_BUTTON = "#login-button";
-    private static final String ERROR_MESSAGE = "[data-test='error']";
+    // Locators
+    // Update these CSS selectors based on the actual DOM of easycater.co.in if
+    // needed
+    private final String loginMenuBtn = "text=Log In";
+    private final String emailInput = "input[type='email']";
+    private final String passwordInput = "input[type='password']";
+    private final String submitButton = "button[type='submit']";
 
+    // Constructor
     public LoginPage(Page page) {
-        super(page);
+        this.page = page;
     }
 
-    public LoginPage open() {
-        navigate(ConfigManager.getBaseUrl());
-        return this;
+    // Actions
+    public void navigateToHomePage() {
+        page.navigate("https://test-www.easycater.co.in/");
     }
 
-    public void enterUsername(String username) {
-        fill(USERNAME_INPUT, username);
+    public void clickLoginMenu() {
+        // Clicks the initial login button/link on the homepage if there is one
+        page.locator(loginMenuBtn).first().click();
+    }
+
+    public void enterEmail(String email) {
+        page.locator(emailInput).fill(email);
     }
 
     public void enterPassword(String password) {
-        fill(PASSWORD_INPUT, password);
+        page.locator(passwordInput).fill(password);
     }
 
-    public void clickLogin() {
-        click(LOGIN_BUTTON);
+    public void clickSubmit() {
+        page.locator(submitButton).click();
     }
 
-    public InventoryPage loginAsValidUser(String username, String password) {
-        enterUsername(username);
+    // Combined Login Method
+    public void loginToEasyCater(String email, String password) {
+        enterEmail(email);
         enterPassword(password);
-        clickLogin();
-        return new InventoryPage(page);
-    }
-
-    public LoginPage loginExpectingFailure(String username, String password) {
-        enterUsername(username);
-        enterPassword(password);
-        clickLogin();
-        return this;
-    }
-
-    public boolean isErrorDisplayed() {
-        return isVisible(ERROR_MESSAGE);
-    }
-
-    public String getErrorMessage() {
-        return getText(ERROR_MESSAGE);
+        clickSubmit();
     }
 }
