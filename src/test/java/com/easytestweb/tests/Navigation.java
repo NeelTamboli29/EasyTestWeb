@@ -33,6 +33,8 @@ public class Navigation {
 
         // Assertion: Ensure the page URL contains the expected domain
         // assertThat(page).hasURL("https://test-www.easycater.co.in/");
+
+        page.waitForTimeout(3000);
     }
 
     @AfterEach
